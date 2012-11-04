@@ -1,0 +1,17 @@
+{% extends "layout.html" %}
+{% block title %}Register{% endblock %}
+{% block body %}
+  <h2>Register</h2>
+  {% from "forms/macros.html" import render_field %}
+  <form method="POST" action="{{ url_for('users.register') }}" class="form">
+    <dl>
+    {{ form.csrf_token }}
+    {{ render_field(form.name) }}
+    {{ render_field(form.email) }}
+    {{ render_field(form.password) }}
+    {{ render_field(form.confirm) }}
+    {{ render_field(form.accept_tos) }}
+    </dl>
+    <input type="submit" value="Register" class="button green">
+  </form>
+{% endblock %}

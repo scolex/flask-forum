@@ -1,0 +1,23 @@
+{% extends "layout.html" %}
+{% block title %}Welcome{% endblock %}
+{% block body %}
+<h2>Welcome</h2>
+
+{% if current_user.is_authenticated() %}
+<p><a href="{{ url_for('forum.create_category') }}">Create category</a>.</p>
+{% endif %}
+
+{% for category in categories %}
+	<h2>{{ category.title }}</h2>
+	<a href="{{ url_for('forum.delete_category', id_category=category.id_category) }}">Delete category</a> <a href="{{ url_for('forum.create_topic', id_category=category.id_category) }}">Create topic</a>
+	{% for topic in category.topics %}	
+	<h3><a href="{{ url_for('forum.view_topic', id_topic=topic.id_topic) }}">{{ topic.title | safe }}</a></h3>
+	{% else %}
+	<li><em>Unbelievable. No topics here so far</em>
+	{% endfor %}
+{% else %}
+	<li><em>Unbelievable. No categories here so far</em>
+{% endfor %}
+</ul>
+
+{% endblock body %}

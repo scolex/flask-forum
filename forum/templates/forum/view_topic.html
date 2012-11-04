@@ -1,0 +1,30 @@
+{% extends "layout.html" %}
+{% block title %}View topic{% endblock %}
+{% block body %}
+  <h2>{{ topic.title }}</h2>
+  <a href="{{ url_for('index') }}">back to category list</a>
+  {% if current_user.is_authenticated() %}
+  {% from "forms/macros.html" import render_field %}
+   <form method="POST" action="{{ url_for('forum.send_post', id_topic=topic.id_topic) }}" class="form">
+     <dl>
+      {{ form.csrf_token }}
+      {{ render_field(form.content) }}
+      <input type="submit" value="Send" class="button green">
+    </dl>
+  </form>
+  {% endif %}
+  <div class="posts">
+  {% for post in topic.posts.paginate(page, per_page).items %}
+    <div>
+      <span>{{ post.date_posted }}</span>
+      <span>{{ post.user.name }}</span>
+      <span><a href="{{ url_for('forum.delete_post', id_post=post.id_post, id_topic=topic.id_topic, page=page) }}">Delete post</a></span>
+      <p>{{ post.content| safe }}
+    </div>
+  {% else %}
+    <em>Unbelievable. No entries here so far</em>
+  {% endfor %}
+  </div>
+  {% from "forms/macros.html" import render_pagination %} 
+  {{ render_pagination(topic.posts.paginate(page, per_page), "forum.view_topic",id_topic=topic.id_topic) }}
+{% endblock %}

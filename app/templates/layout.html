@@ -1,0 +1,22 @@
+<!doctype html>
+<title>{% block title %}Welcome{% endblock %} | Forum</title>
+<link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
+<div class=page>
+  <h1>Flask Forum</h1>
+  <div class=metanav>
+  {% if current_user.is_authenticated() %}
+    Welcome, {{ current_user.name }} | <a href="{{ url_for('users.logout') }}">log out</a>
+  {% else %}
+    You are not logged in | <a href="{{ url_for('users.login') }}">log in</a>
+                            <a href="{{ url_for('users.register') }}">register</a>
+  {% endif %}
+  </div>
+  <div id="messages-wrap">
+    <div id="messages">
+      {% for category, msg in get_flashed_messages(with_categories=true) %}
+        <p class="message flash-{{ category }}">{{ msg }}</p>
+      {% endfor %}
+    </div>
+  </div>
+  {% block body %}{% endblock %}
+</div>

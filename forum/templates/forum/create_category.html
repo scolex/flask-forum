@@ -1,0 +1,13 @@
+{% extends "layout.html" %}
+{% block title %}Create topic{% endblock %}
+{% block body %}
+  <h2>Create category</h2>
+  {% from "forms/macros.html" import render_field %}
+   <form method="POST" action="{{ url_for('forum.create_category') }}" class="form">
+   	 <dl>
+      {{ form.csrf_token }}
+      {{ render_field(form.title) }}
+      <input type="submit" value="Create" class="button green">
+  </dl>
+  </form>
+{% endblock %}
